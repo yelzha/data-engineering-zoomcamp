@@ -10,6 +10,18 @@ We suggest watching videos in the same order as in this document.
 The last video (setting up the environment) is optional, but you can check it earlier 
 if you have troubles setting up the environment and following along with the videos.
 
+# Checklist:
+1. Created new project on GCP.
+2. Installed terraform and added to Windows Environment Variables
+3. Installed google-cloud-sdk and added all needed paths to Windows Environment Variables
+4. Activated using this command: gcloud auth activate-service-account --key-file %GOOGLE_APPLICATION_CREDENTIALS%
+5. tested terraform:
+   * terraform plan -var="project=<project-id>"
+   * terraform apply -var="project=<project-id>"
+
+![image](https://github.com/yelzha/data-engineering-zoomcamp/assets/54392243/3d2d8b90-da8c-4777-a56c-0cc3aacab752)
+
+
 
 # Docker + Postgres
 
