@@ -1,15 +1,3 @@
-# Introduction
-
-* [Video](https://www.youtube.com/watch?v=-zpVha7bw5A)
-* [Slides](https://www.slideshare.net/AlexeyGrigorev/data-engineering-zoomcamp-introduction)
-* Overview of [Architecture](https://github.com/DataTalksClub/data-engineering-zoomcamp#overview), [Technologies](https://github.com/DataTalksClub/data-engineering-zoomcamp#technologies) & [Pre-Requisites](https://github.com/DataTalksClub/data-engineering-zoomcamp#prerequisites)
-
-
-We suggest watching videos in the same order as in this document.
-
-The last video (setting up the environment) is optional, but you can check it earlier 
-if you have troubles setting up the environment and following along with the videos.
-
 # Checklist:
 1. Created new project on GCP.
 2. Installed terraform and added to Windows Environment Variables
