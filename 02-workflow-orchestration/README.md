@@ -43,7 +43,7 @@ def load_data_from_api(*args, **kwargs):
     }
     parse_dates = ['lpep_pickup_datetime', 'lpep_dropoff_datetime']
 
-    for i in range(9, 13):
+    for i in range(10, 13):
         url = f'https://github.com/DataTalksClub/nyc-tlc-data/releases/download/green/green_tripdata_2020-{i}.csv.gz'
         dfs.append(pd.read_csv(url, sep=',', compression='gzip', dtype=taxi_dtypes, parse_dates=parse_dates))
 
