@@ -1,5 +1,5 @@
 # Week 4: Analytics Engineering 
-Goal: Transforming the data loaded in DWH into Analytical Views developing a [dbt project](taxi_rides_ny/README.md).
+Goal: Transforming the data loaded in DWH into Analytical Views developing a [dbt project](docker_setup/dbt/taxi_rides_ny/README.md).
 
 ### Prerequisites
 By this stage of the course you should have already: 
@@ -9,7 +9,143 @@ By this stage of the course you should have already:
 - The following datasets ingested from the course [Datasets list](https://github.com/DataTalksClub/nyc-tlc-data/): 
   * Yellow taxi data - Years 2019 and 2020
   * Green taxi data - Years 2019 and 2020 
-  * fhv data - Year 2019. 
+  * fhv data - Year 2019.
+ 
+### Check List:
+- loaded all data to google cloud storage as bucket and also test it using [SQL script](bigquery_homework.sql) and loaded by [Python code](../03-data-warehouse/extras/web_to_gcs_2.py)
+- Created dbt project and tested for Green and yellow data ✅
+- Created models for FHV data ✅
+- Visualized comparison of three dataset [Looker Studio PDF](de-zoomcamp-week4.pdf) ✅
+
+fact_fhv_trips.sql:
+```sql
+{{
+    config(
+        materialized='view'
+    )
+}}
+
+with tripdata as
+(
+  select *
+  from {{ source('staging', 'fhv_tripdata') }}
+  where extract(year from pickup_datetime) = 2019
+)
+select
+    --identifiers
+    {{ dbt_utils.generate_surrogate_key(['dispatching_base_num', 'pickup_datetime', 'dropoff_datetime']) }} as tripid,
+    dispatching_base_num,
+    affiliated_base_number,
+    {{ dbt.safe_cast("SR_Flag", api.Column.translate_type("integer")) }} as sr_flag,
+    {{ dbt.safe_cast("pulocationid", api.Column.translate_type("integer")) }} as pickup_locationid,
+    {{ dbt.safe_cast("dolocationid", api.Column.translate_type("integer")) }} as dropoff_locationid,
+
+    -- timestamps
+    cast(pickup_datetime as timestamp) as pickup_datetime,
+    cast(dropoff_datetime as timestamp) as dropoff_datetime,
+from tripdata
+
+-- dbt build --select <model.sql> --vars '{'is_test_run': 'false'}'
+-- dbt build --select stg_fhv_tripdata --vars '{'is_test_run': 'false'}'
+{% if var('is_test_run', default=true) %}
+
+  limit 100
+
+{% endif %}
+```
+
+stg_fhv_tripdata.sql:
+```sql
+{{
+    config(
+        materialized='table'
+    )
+}}
+
+with fhv_tripdata as (
+    select *
+    from {{ ref('stg_fhv_tripdata') }}
+),
+dim_zones as (
+    select * from {{ ref('dim_zones') }}
+    where borough != 'Unknown'
+)
+select
+    fhv_tripdata.tripid,
+    fhv_tripdata.dispatching_base_num,
+    fhv_tripdata.affiliated_base_number,
+    fhv_tripdata.sr_flag,
+    fhv_tripdata.pickup_locationid,
+    pickup_zone.borough as pickup_borough,
+    pickup_zone.zone as pickup_zone,
+    fhv_tripdata.dropoff_locationid,
+    dropoff_zone.borough as dropoff_borough,
+    dropoff_zone.zone as dropoff_zone,
+    fhv_tripdata.pickup_datetime,
+    fhv_tripdata.dropoff_datetime
+from
+    fhv_tripdata
+inner join
+    dim_zones as pickup_zone
+on
+    fhv_tripdata.pickup_locationid = pickup_zone.locationid
+inner join
+    dim_zones as dropoff_zone
+on
+    fhv_tripdata.dropoff_locationid = dropoff_zone.locationid
+```
+
+rides_july_2019.sql:
+```sql
+{{
+    config(
+        materialized='table'
+    )
+}}
+
+with trips_data as (
+    select
+        tripid,
+        pickup_datetime,
+        service_type
+    from
+        {{ ref('fact_trips') }}
+), fhv_trips_data as (
+    select
+        tripid,
+        pickup_datetime,
+        'FHV' as service_type
+    from
+        {{ ref('fact_fhv_trips') }}
+), all_trips AS (
+    SELECT
+        *
+    FROM
+        trips_data
+    UNION ALL
+    SELECT
+        *
+    FROM
+        fhv_trips_data
+)
+select
+    EXTRACT(date FROM pickup_datetime) AS pickup_date,
+    service_type,
+    COUNT(tripid) AS cnt
+from all_trips
+--WHERE
+--    EXTRACT(month FROM pickup_datetime) = 6
+--    AND EXTRACT(year FROM pickup_datetime) = 2019
+GROUP BY
+    pickup_date,
+    service_type
+ORDER BY
+    pickup_date,
+    service_type
+```
+
+
+
 
 > [!NOTE]  
 > * We have two quick hack to load that data quicker, follow [this video](https://www.youtube.com/watch?v=Mork172sK_c&list=PLaNLNpjZpzwgneiI-Gl8df8GCsPYp_6Bs) for option 1 or check instructions in [week3/extras](../03-data-warehouse/extras) for option 2
