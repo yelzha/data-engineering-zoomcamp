@@ -59,4 +59,5 @@ def web_to_gcs(year, service):
 
 
 if __name__ == '__main__':
-    web_to_gcs('2022', 'green')
+    # web_to_gcs('2022', 'green')
+    web_to_gcs('2020', 'fhv')

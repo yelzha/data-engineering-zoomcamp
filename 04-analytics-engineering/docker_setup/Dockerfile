@@ -10,6 +10,7 @@ ARG build_for=linux/amd64
 # base image (abstract)
 ##
 FROM --platform=$build_for python:3.9.9-slim-bullseye as base
+RUN python -m pip install --no-cache pytz
 
 # N.B. The refs updated automagically every release via bumpversion
 # N.B. dbt-postgres is currently found in the core codebase so a value of dbt-core@<some_version> is correct
