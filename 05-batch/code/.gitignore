@@ -1,0 +1,6 @@
+*.parquet
+*.csv
+*.csv.gz
+data/
+fhvhv/
+zones/
