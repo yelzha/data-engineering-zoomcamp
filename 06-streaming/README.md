@@ -82,11 +82,11 @@ Please follow the steps described under [pyspark-streaming](python/streams-examp
 
 - :movie_camera: 6.13 Kafka Streaming with Python
 
-[![](https://markdown-videos-api.jorgenkh.no/youtube/Y76Ez_fIvtk)](https://youtu.be/Y76Ez_fIvtk&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=79)
+[![](https://markdown-videos-api.jorgenkh.no/youtube/BgAlVknDFlQ)](https://youtu.be/BgAlVknDFlQ&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=79)
 
 - :movie_camera: 6.14 Pyspark Structured Streaming
 
-[![](https://markdown-videos-api.jorgenkh.no/youtube/5hRJ8-6Fpyk)](https://youtu.be/5hRJ8-6Fpyk&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=80)
+[![](https://markdown-videos-api.jorgenkh.no/youtube/VIVr7KwRQmE)](https://youtu.be/VIVr7KwRQmE&list=PL3MmuxUbc_hJed7dXYoJw8DoCuVHhGEQb&index=80)
 
 ## Kafka Streams with JVM library
 
@@ -125,5 +125,7 @@ Did you take notes? You can share them here.
 * [Notes by Alvaro Navas](https://github.com/ziritrion/dataeng-zoomcamp/blob/main/notes/6_streaming.md )
 * [Marcos Torregrosa's blog (spanish)](https://www.n4gash.com/2023/data-engineering-zoomcamp-semana-6-stream-processing/)
 * [Notes by Oscar Garcia](https://github.com/ozkary/Data-Engineering-Bootcamp/tree/main/Step6-Streaming)
+* [2024 videos transcript](https://drive.google.com/drive/folders/1UngeL5FM-GcDLM7QYaDTKb3jIS6CQC14?usp=drive_link) by Maria Fisher 
+* [Notes by Shayan Shafiee Moghadam](https://github.com/shayansm2/eng-notebook/blob/main/kafka/readme.md)
 * Add your notes here (above this line)
 
